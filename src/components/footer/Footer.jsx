@@ -26,7 +26,8 @@ export default function Footer() {
     ];
 
     return (
-        <div className="site-footer">
+        <div className="site-footer" style={{ 
+            backgroundImage: `url("https://i.imgur.com/GMoQIls.png")`}}>
             <div className="container">
                 <div className="site-footer__widgets">
                     <div className="row">
