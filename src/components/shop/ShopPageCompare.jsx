@@ -1,5 +1,5 @@
 // react
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 // third-party
 import classNames from 'classnames';
@@ -14,16 +14,88 @@ import PageHeader from '../shared/PageHeader';
 import Rating from '../shared/Rating';
 import { cartAddItem } from '../../store/cart';
 import { compareRemoveItem } from '../../store/compare';
-import { url } from '../../services/utils';
+import { getCategoryParents, url } from '../../services/utils';
 
 // data stubs
 import theme from '../../data/theme';
 
 function ShopPageCompare(props) {
+
+    // MULTISTEP FORM START 
+    const [formStep, setFormStep] = React.useState(0)
+
+        // STEP 0 BUTTONS
+
+    const completeFormStep1 = () => {
+        setFormStep(cur => +1)
+    }
+
+    const completeFormStep2 = () => {
+        setFormStep(cur => +2)
+    }
+
+        // STEP 2 GET INFO AND CALCULATE 
+
+    const [suputila, setSuputila] = React.useState(null)
+
+    const getSupUtila = (e) => {
+        setSuputila(+e.target.value)
+    }
+
+    const [inaltime, setInaltime] = React.useState(null)
+
+    const getInaltime = (e) => {
+        setInaltime(+e.target.value)
+    }
+
+    const [bai, setBai] = React.useState(null)
+
+    const getBai = (e) => {
+        setBai(+e.target.value)
+    }
+
+    const [bucatarii, setBucatarii] = React.useState(null)
+
+    const getBucatarii = (e) => {
+        setBucatarii(+e.target.value)
+    }
+
+    const [persoane, setPersoane] = React.useState(null)
+
+    const getPersoane = (e) => {
+        setPersoane(+e.target.value)
+    }
+    
+    const [total, setTotal] = React.useState(null)
+
+    const [ctotal, setCtotal] = React.useState(null)
+
+    const [boiler, setBoiler] = React.useState(null)
+
+
+    useEffect(() => 
+        setTotal(suputila * inaltime * 50 / 1000)
+    )
+
+    useEffect(() => 
+        setCtotal((suputila * inaltime * 50 / 1000) + bai * 2 + bucatarii * 2)
+    )
+
+    useEffect(() => 
+        setBoiler(persoane*30)
+)
+
+
+
+
+
+    // MULTISTEP FORM STOP
+
+
     const { products, compareRemoveItem, cartAddItem } = props;
     const breadcrumb = [
         { title: 'Home', url: '' },
-        { title: 'Comparison', url: '' },
+        { title: 'Oferta', url: '' },
     ];
 
     let content;
@@ -148,39 +220,172 @@ function ShopPageCompare(props) {
 
         content = (
             <div className="block">
+
+
+
                 <div className="container">
-                    <div className="table-responsive">
-                        <table className="compare-table">
-                            <tbody>
-                                <tr>
-                                    <th>Product</th>
-                                    {productInfoRow}
-                                </tr>
-                                <tr>
-                                    <th>Rating</th>
-                                    {ratingRow}
-                                </tr>
-                                <tr>
-                                    <th>Availability</th>
-                                    {availabilityRow}
-                                </tr>
-                                <tr>
-                                    <th>Price</th>
-                                    {priceRow}
-                                </tr>
-                                <tr>
-                                    <th>Add To Cart</th>
-                                    {addToCartRow}
-                                </tr>
-                                {attributeRows}
-                                <tr>
-                                    <th aria-label="Remove" />
-                                    {removeRow}
-                                </tr>
-                            </tbody>
-                        </table>
+                    { formStep=== 0 && (
+                    <>
+                    <div className="custom-offer-wrapper">
+                    <div onClick={completeFormStep1} className="offer-button-right">
+                        <span>PERSONALIZEAZA</span>
+                        <p className="test">Centrala Termica <br/>regim ACM instant</p>
+                        <button type="button" class="btn btn-primary">Configureaza Acum</button>
                     </div>
+                    <div onClick={completeFormStep2} className="offer-button-left">
+                        <span>PERSONALIZEAZA</span>
+                        <p className="test">Centrala Termica  <br/>preparare ACM boiler extern</p>
+                        <button type="button" class="btn btn-primary">Configureaza Acum</button>
+                    </div>
+                    </div>
+                    </>
+                    )}
+                    { formStep=== 1 && (
+                        <form>
+                            <label for="basic-url">Ce suprafata utila are casa dvs ?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >MP</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={suputila} onChange={getSupUtila} required/>
+                            </div>
+
+                            <label for="basic-url">Ce inaltime medie au incaperile dvs.?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >M</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={inaltime} onChange={getInaltime} required/>
+                            </div>
+                            <label>Puterea CT necesara este <strong>{total} KW</strong></label>
+
+                            { total > 0 && (
+                                <>
+                                    <div>Centrale recomandate :</div>
+                                    <table className="compare-table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Product</th>
+                                                {productInfoRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Rating</th>
+                                                {ratingRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Availability</th>
+                                                {availabilityRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Price</th>
+                                                {priceRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Add To Cart</th>
+                                                {addToCartRow}
+                                            </tr>
+                                            {attributeRows}
+                                            <tr>
+                                                <th aria-label="Remove" />
+                                                {removeRow}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </> 
+                        )}
+                        
+
+
+                        </form>
+                    )}
+                    { formStep=== 2 && (
+                        <form>
+                            <label for="basic-url">Ce suprafata utila are casa dvs ?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >MP</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={suputila} onChange={getSupUtila} required/>
+                            </div>
+
+                            <label for="basic-url">Ce inaltime medie au incaperile dvs.?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >M</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={inaltime} onChange={getInaltime} required/>
+                            </div>
+
+                            <label for="basic-url">Cate bai aveti?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >Buc</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={bai} onChange={getBai} required/>
+                            </div>
+
+                            <label for="basic-url">Cate bucatarii aveti?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >Buc</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={bucatarii} onChange={getBucatarii} required/>
+                            </div>
+
+                            <label for="basic-url">Pentru boiler separat de centrala termica va rugam sa mentionati cate persoane locuiesc in cladire?{persoane}</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >Pers</span>
+                                </div>
+                                <input type="number" class="form-control"  aria-describedby="basic-addon3" value={persoane} onChange={getPersoane} required/>
+                            </div>
+
+
+                            <label>Puterea CT necesara este <strong>{ctotal} KW</strong></label><br/>
+                            <label>Daca doresti CT doar pentru incalzire si preparare apa calda prin boiler, ai nevoie de un boiler de: <strong>{boiler} litri</strong></label>
+
+                            { ctotal > 0 && bai > 0 && bucatarii > 0 &&  (
+                                <>
+                                <div>Centrale recomandate :</div>
+                                    <table className="compare-table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Product</th>
+                                                {productInfoRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Rating</th>
+                                                {ratingRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Availability</th>
+                                                {availabilityRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Price</th>
+                                                {priceRow}
+                                            </tr>
+                                            <tr>
+                                                <th>Add To Cart</th>
+                                                {addToCartRow}
+                                            </tr>
+                                            {attributeRows}
+                                            <tr>
+                                                <th aria-label="Remove" />
+                                                {removeRow}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </>
+                            )}
+                        </form>
+                    )}
                 </div>
+
+
+
+
+
             </div>
         );
     } else {
@@ -204,7 +409,7 @@ function ShopPageCompare(props) {
                 <title>{`Compare Products Page — ${theme.name}`}</title>
             </Helmet>
 
-            <PageHeader header="Comparison" breadcrumb={breadcrumb} />
+            <PageHeader header="Oferta" breadcrumb={breadcrumb} />
 
             {content}
         </React.Fragment>

@@ -41,7 +41,7 @@ $local-transition-duration: .25s;
 .departments__button-icon {
     position: absolute;
     top: calc(50% - 7px);
-    fill: $departments-icon-color;
+    fill: #fff;
     transition: fill .2s;
 
     @include direction {

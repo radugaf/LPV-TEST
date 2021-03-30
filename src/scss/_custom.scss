@@ -46,3 +46,90 @@
     color: #fff;
 }
 
+.mobile-header__menu-button {
+    fill: #fff;
+}
+
+// CUSTOM OFFER PAGE
+
+.custom-offer-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+.offer-button-right, .offer-button-left {
+    width: 300px;
+    height: 250px;
+    border: 2px solid #f0f0f0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.5s ease-in-out;
+    box-sizing: border-box;
+}
+
+.offer-button-right:hover, .offer-button-left:hover {
+    transform: scale(1.1);
+    transform-origin: center center;
+    transition: all 0.5s ease-in-out;
+    border: 2px solid #3366cc;
+    box-sizing: border-box;
+}
+
+.offer-button-right > span, .offer-button-left > span {
+    font-size: 0.7rem;
+    background-color: #a7a5a5;
+    color: #fff;
+    padding: 5px;
+    top: -1px;
+    right: 15px;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.offer-button-right > button, .offer-button-left > button {
+    width: 100%;
+    margin-top: auto;
+    box-sizing: border-box;
+}
+
+.test {
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+    font-size: 15px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+@media (max-width:480px)  { 
+    .custom-offer-wrapper {
+        gap: 15px;
+    }
+
+    .offer-button-right, .offer-button-left {
+        width: 50%;
+        height: 210px;
+    }
+
+    .offer-button-right > button, .offer-button-left > button {
+        height: fit-content;
+        margin-top: auto;
+        padding: 5px;
+        font-size: 0.9rem;
+    }
+
+    .test {
+        margin-top: 50px;
+    }
+
+    .offer-button-right > span, .offer-button-left > span {
+        left: 12%;
+        right: 12%;
+        text-align: center;
+    }
+}
